@@ -5,7 +5,7 @@ export function formFrag() {
             <input type="text" id='input-ctnr' required />
             
             <!-- 2. Tambahkan type="button" agar klik tombol tidak men-trigger reload halaman -->
-            <button type="button" id='btn-add'>Add</button>
+            <button type="submit" id='btn-add'>Add</button>
             <button type="button" id='btn'>Cancel</button>
           </form>`;
 }
