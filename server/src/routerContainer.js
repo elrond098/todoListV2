@@ -24,37 +24,15 @@ router.post('/add', async (req, res) => {
   });
 });
 
-// router.delete('/delete', async (req, res) => {
-//   console.log('router.js: BE Received The Request', req.body);
-//   const { id } = req.body;
-//   const dbres = await deleteContainer(id);
-//   res.status(200).json({
-//     success: true,
-//     mesasge: 'Container had beed deleted by server',
-//     data: dbres
-//   });
-// });
-//
-//
 router.delete('/delete', async (req, res) => {
-  try {
-    console.log('router.js: BE Received The Request', req.body);
-
-    const { id } = req.body;
-
-    const dbres = await deleteContainer(id);
-
-    res.status(200).json({
-      success: true,
-      message: 'Container had been deleted by server',
-      data: dbres
-    });
-  } catch (err) {
-    res.status(500).json({
-      success: false,
-      message: err.message
-    });
-  }
+  console.log('router.js: BE Received The Request', req.body);
+  const { id } = req.body;
+  const dbres = await deleteContainer(id);
+  res.status(200).json({
+    success: true,
+    mesasge: 'Container had beed deleted by server',
+    data: dbres
+  });
 });
 
 export default router;

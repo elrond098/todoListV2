@@ -1,5 +1,7 @@
 import qr, { end } from './db.js';
-
+//
+// Containers Area ===================================================================================
+//
 export async function display() {
   let res;
   try {
@@ -30,37 +32,40 @@ export async function addContainer(params) {
 
 // addContainer('Test'); 
 
-// export async function deleteContainer(params) {
-//   let res;
-//   try {
-//     res = await qr('DELETE FROM Containers WHERE id = $1 RETURNING *', [params]);
-//     console.log('serv.js: Data had been deleted', res.rows);
-//   } catch (err) {
-//     console.error('serv.js: Failed to delete container', err.stack);
-//   } finally {
-//
-//   }
-//   return res ? res.rows : null;
-// }
-//
-
-export async function deleteContainer(id) {
+export async function deleteContainer(params) {
+  let res;
   try {
-    console.log('serv.js: ID to delete:', id);
-
-    const res = await qr(
-      'DELETE FROM Containers WHERE id = $1 RETURNING *',
-      [id]
-    );
-
-    console.log('serv.js: Data had been deleted:', res.rows);
-
-    return res.rows;
+    res = await qr('DELETE FROM Containers WHERE id = $1 RETURNING *', [params]);
+    console.log('serv.js: Data had been deleted', res.rows);
   } catch (err) {
-    console.error('serv.js: Failed to delete container');
-    console.error('Message:', err.message);
-    console.error('Stack:', err.stack);
-
-    throw err;
+    console.error('serv.js: Failed to delete container', err.stack);
+    return res ? res.rows : null;
   }
 }
+//
+// TodoList Area ==========================================================================================
+//
+export async function displayTodoList(params) {
+  let res;
+  try {
+    res = await qr('SELECT * FROM todolist WHERE countainer_id = $1', [params]);
+    console.log('serv.js: Data had been taken', res.rows);
+  } catch (err) {
+    console.error('serv.js: Failed to take all TodoList', err.stack);
+  } finally {
+    // await end();
+  }
+  return res ? res.rows : null;
+}
+
+export async function addTodoList(params1, params2) {
+  let res;
+  try {
+    res = await qr('INSERT INTO todolist(countainer_id, title) VALUES($1, $2) RETURNING *', [params1, params2]);
+    console.log('serv.js: TodoList had Been Added', res.rows);
+  } catch (err) {
+    console.error('serv.js: Failed to Add TodoList', err.stack);
+  }
+  return res ? res.rows : null;
+}
+

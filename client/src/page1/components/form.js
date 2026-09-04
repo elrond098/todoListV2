@@ -7,6 +7,6 @@ export function formFrag() {
             <!-- 2. Tambahkan type="button" agar klik tombol tidak men-trigger reload halaman -->
             <button type="submit" id='btn-add'>Add</button>
             <button type="button" id='btn'>Cancel</button>
-          </form>`;
+          </form>  <ul id="list"></ul>`;
 }
 

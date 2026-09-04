@@ -1,37 +1,22 @@
-
+import todoList from './page2/main.js';
+import container from './page1/main.js';
 import { formFrag } from './page1/components/form.js';
-import { addContainer, dspContainer, deleteContainer } from './controller.js';
-import { displayctnr } from './page1/components/dsplctnr.js';
+import { formFragTodo } from './page2/components/form.js';
 
-async function start() {
-  // 1. Render form ke dalam HTML
+
+export async function startPage1() {
   document.getElementById('app').innerHTML = formFrag();
 
-  const btnAdd = document.getElementById('form');
-  // Ambil elemen inputnya saja (jangan .value dulu)
-  const inputEl = document.getElementById('input-ctnr');
+  let todos = [];
+  container(todos);
+}
 
-  async function onDelete(id) {
-    await deleteContainer({ id });
-    await dspContainer(todos);
-    displayctnr(todos, onDelete);
-  }
+export async function startPage2(container) {
+  document.getElementById('app').innerHTML = formFragTodo(container);
 
   let todos = [];
-  await dspContainer(todos);
-  displayctnr(todos, onDelete);
-  // 2. Tambahkan event listener dengan benar
-  btnAdd.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    // Ambil nilai teks TERBARU yang sedang diketik user saat tombol diklik
-    const currentInputValue = inputEl.value;
+  todoList(todos, container);
+}
 
-    // Kirim data objek ke fungsi controller
-    await addContainer({ container: currentInputValue }, todos);
-    console.log('main.js: The List Of Container:', todos)
-    displayctnr(todos, onDelete);
-    inputEl.value = '';
-  });
-};
+startPage1();
 
-start();
