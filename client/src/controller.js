@@ -124,24 +124,25 @@ export async function dspTodoList(params, params2) {
   params.push(...result.data);
 }
 
-// export async function deleteContainer(params) {
-//   try {
-//     const res = await fetch(httpPath + 'ctnr/delete', {
-//       method: 'DELETE',
-//       headers: {
-//         'Content-Type': 'application/json'
-//       },
-//       body: JSON.stringify(params)
-//     });
-//
-//     if (!res.ok) {
-//       throw new Error(`controller.js: HTTP error! Status: ${res.status}`);
-//     }
-//
-//     const result = await res.json();
-//     console.log('controller.js: Responses from server:', result);
-//   } catch (error) {
-//     console.error('controller.js: Failed delete container:', error);
-//   }
-// }
+export async function deleteTodoList(params, params2) {
+  try {
+    const res = await fetch(httpPath + 'todolist/delete', {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(params)
+    });
+
+    if (!res.ok) {
+      throw new Error(`controller.js: HTTP error! Status: ${res.status}`);
+    }
+
+    const result = await res.json();
+    console.log('controller.js: Responses from server:', result);
+  } catch (error) {
+    console.error('controller.js: Failed delete todolist:', error);
+  }
+  await dspTodoList(params2, params);
+}
 

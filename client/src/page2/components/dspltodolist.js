@@ -1,4 +1,4 @@
-import { addTodoList, dspTodoList, deleteContainer } from '../../controller.js';
+import { addTodoList, dspTodoList, deleteTodoList } from '../../controller.js';
 import '../style/style.css';
 
 // export function displayTodoList(params) {
@@ -44,9 +44,9 @@ export async function todoListComp(todos, idTodo) {
   }
   sortSelect.addEventListener('change', () => {
     if (sortSelect.value === 'up') {
-      todos.sort((a, b) => b.createdAt - a.createdAt);
+      todos.sort((a, b) => b.id - a.id);
     } else if (sortSelect.value === 'down') {
-      todos.sort((a, b) => a.createdAt - b.createdAt);
+      todos.sort((a, b) => a.id - b.id);
     }
 
     renderTodos();
@@ -160,8 +160,10 @@ export async function todoListComp(todos, idTodo) {
     renderTodos();
   }
 
-  function removeTodo(id) {
-    todos = todos.filter(todo => todo.id !== id);
+  async function removeTodo(todoData) {
+    const { id } = idTodo;
+    await deleteTodoList({ idTodoList: todoData, id: id }, todos);
+    // todos = todos.filter(todo => todo.id !== id);
     // saveTodos();
     renderTodos();
   }

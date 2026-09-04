@@ -69,3 +69,13 @@ export async function addTodoList(params1, params2) {
   return res ? res.rows : null;
 }
 
+export async function deleteTodoList(params) {
+  let res;
+  try {
+    res = await qr('DELETE FROM todolist WHERE id = $1 RETURNING *', [params]);
+    console.log('serv.js: Data had been deleted', res.rows);
+  } catch (err) {
+    console.error('serv.js: Failed to delete todolist', err.stack);
+    return res ? res.rows : null;
+  }
+}

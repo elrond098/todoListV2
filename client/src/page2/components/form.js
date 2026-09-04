@@ -10,8 +10,8 @@ export function formFragTodo(title) {
 
         <div id="tab" class="tab">
             <select id="sort" class="sort" name="sort">
-                <option value="up">Terbaru</option>
                 <option value="down">Terlama</option>
+                <option value="up">Terbaru</option>
             </select>
             <div class="filters">
                 <button class="filter-button active" data-filter="all">Semua</button>
