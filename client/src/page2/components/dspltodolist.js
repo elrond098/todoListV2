@@ -1,4 +1,4 @@
-import { addTodoList, dspTodoList, deleteTodoList } from '../../controller.js';
+import { addTodoList, dspTodoList, deleteTodoList, changeCompletedStatus, updateTodoPosition } from '../../controller.js';
 import '../style/style.css';
 
 // export function displayTodoList(params) {
@@ -26,20 +26,16 @@ export async function todoListComp(todos, idTodo) {
   let activeFilter = 'all';
 
   select.addEventListener('click', () => {
-    if (select.textContent === 'Select All') {
-      select.textContent = 'Deselect All';
-      selectAll(true);
-    } else {
-      select.textContent = 'Select All';
-      selectAll(false);
-    }
+    const hasUncompleted = todos.some(todo => !todo.completed);
+    selectAll(hasUncompleted);
   });
 
-  function selectAll(f) {
+  async function selectAll(f) {
     todos = todos.map(todo => ({
       ...todo,
       completed: f
     }));
+    await changeCompletedStatus({ completed: f, id: idTodo.id }, todos)
     renderTodos();
   }
   sortSelect.addEventListener('change', () => {
@@ -77,7 +73,7 @@ export async function todoListComp(todos, idTodo) {
       const checkbox = document.createElement('input');
       checkbox.type = 'checkbox';
       checkbox.checked = todo.completed;
-      checkbox.addEventListener('change', () => toggleTodo(todo.id));
+      checkbox.addEventListener('change', () => toggleTodo(todo));
 
       const text = document.createElement('p');
       text.className = 'todo-text';
@@ -91,16 +87,16 @@ export async function todoListComp(todos, idTodo) {
       const mvDown = document.createElement('button');
       mvDown.textContent = "↓";
 
-      mvDown.addEventListener('click', () => moveDown(realIndex));
+      mvDown.addEventListener('click', () => moveDown(realIndex, idTodo.id));
 
       const mvUp = document.createElement('button');
       mvUp.textContent = "↑";
 
-      mvUp.addEventListener('click', () => moveUp(realIndex));
+      mvUp.addEventListener('click', () => moveUp(realIndex, idTodo.id));
 
       const completeButton = document.createElement('button');
       completeButton.textContent = todo.completed ? '-' : '+';
-      completeButton.addEventListener('click', () => toggleTodo(todo.id));
+      completeButton.addEventListener('click', () => toggleTodo(todo));
 
 
       const deleteButton = document.createElement('button');
@@ -132,30 +128,70 @@ export async function todoListComp(todos, idTodo) {
   //   renderTodos();
   // }
   //
-  function moveUp(index) {
-    if (index === 0) return;
+  // function moveUp(index) {
+  //   if (index === 0) return;
+  //
+  //   [todos[index - 1], todos[index]] =
+  //     [todos[index], todos[index - 1]];
+  //
+  //   // saveTodos();
+  //   renderTodos();
+  // }
+  //
+  // function moveDown(index) {
+  //   if (index === todos.length - 1) return;
+  //
+  //   [todos[index], todos[index + 1]] =
+  //     [todos[index + 1], todos[index]];
+  //
+  //   // saveTodos();
+  //   renderTodos();
+  // }
+  //
 
-    [todos[index - 1], todos[index]] =
-      [todos[index], todos[index - 1]];
 
-    // saveTodos();
+
+  async function moveUp(index, todoData) {
+    if (index === 0 || !todos[index] || !todos[index - 1]) return;
+
+    // 💡 Ambil ID-nya terlebih dahulu saat objeknya masih aman berada di tempatnya
+    const idDataYangNaik = todos[index].id;
+    const idDataYangTurun = todos[index - 1].id;
+
+    // 1. Tukar posisi di array lokal (frontend)
+    [todos[index - 1], todos[index]] = [todos[index], todos[index - 1]];
+
+    // 2. Kirim ke database menggunakan ID yang sudah kita simpan dengan aman tadi
+    await updateTodoPosition({ idTodoList: idDataYangNaik, position: index - 1, id: todoData }, todos);
+    await updateTodoPosition({ idTodoList: idDataYangTurun, position: index, id: todoData }, todos);
+
     renderTodos();
   }
 
-  function moveDown(index) {
-    if (index === todos.length - 1) return;
+  async function moveDown(index, todoData) {
+    if (index === todos.length - 1 || !todos[index] || !todos[index + 1]) return;
 
-    [todos[index], todos[index + 1]] =
-      [todos[index + 1], todos[index]];
+    // 💡 Ambil ID-nya terlebih dahulu saat objeknya masih aman berada di tempatnya
+    const idDataYangTurun = todos[index].id;
+    const idDataYangNaik = todos[index + 1].id;
 
-    // saveTodos();
+    // 1. Tukar posisi di array lokal
+    [todos[index], todos[index + 1]] = [todos[index + 1], todos[index]];
+
+    // 2. Kirim ke database menggunakan ID yang sudah disimpan
+    await updateTodoPosition({ idTodoList: idDataYangTurun, position: index + 1, id: todoData }, todos);
+    await updateTodoPosition({ idTodoList: idDataYangNaik, position: index, id: todoData }, todos);
+
     renderTodos();
   }
 
-  function toggleTodo(id) {
+  async function toggleTodo(todoData) {
+    const { id, completed } = todoData;
+    const newStatus = !completed
     todos = todos.map(todo =>
       todo.id === id ? { ...todo, completed: !todo.completed } : todo
     );
+    await changeCompletedStatus({ idTodoList: id, completed: newStatus, id: idTodo.id }, todos)
     // saveTodos();
     renderTodos();
   }
@@ -168,8 +204,11 @@ export async function todoListComp(todos, idTodo) {
     renderTodos();
   }
 
-  function clearCompleted() {
-    todos = todos.filter(todo => !todo.completed);
+  async function clearCompleted() {
+    const { id } = idTodo;
+    await deleteTodoList({ id: id, completed: true }, todos);
+
+    // todos = todos.filter(todo => !todo.completed);
     // saveTodos();
     renderTodos();
   }

@@ -146,3 +146,48 @@ export async function deleteTodoList(params, params2) {
   await dspTodoList(params2, params);
 }
 
+export async function changeCompletedStatus(params, params2) {
+  try {
+    const res = await fetch(httpPath + 'todolist/changecompletedstatus', {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(params)
+    });
+
+    if (!res.ok) {
+      throw new Error(`controller.js: HTTP error! Status: ${res.status}`);
+    }
+
+    const result = await res.json();
+    console.log('controller.js: Responses from server:', result);
+  } catch (error) {
+    console.error('controller.js: Failed change status completed todolist:', error);
+  }
+  await dspTodoList(params2, params);
+}
+
+export async function updateTodoPosition(params, params2) {
+  try {
+    const res = await fetch(httpPath + 'todolist/changeposition', {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(params)
+    });
+
+    if (!res.ok) {
+      throw new Error(`controller.js: HTTP error! Status: ${res.status}`);
+    }
+
+    const result = await res.json();
+    console.log('controller.js: Responses from server:', result);
+  } catch (error) {
+    console.error('controller.js: Failed change status completed todolist:', error);
+  }
+  await dspTodoList(params2, params);
+}
+
+

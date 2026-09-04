@@ -26,8 +26,8 @@ router.post('/add', async (req, res) => {
 
 router.delete('/delete', async (req, res) => {
   console.log('router.js: BE Received The Request', req.body);
-  const { id } = req.body;
-  const dbres = await deleteContainer(id);
+  const { id, completed } = req.body;
+  const dbres = await deleteContainer(id, completed);
   res.status(200).json({
     success: true,
     mesasge: 'Container had beed deleted by server',

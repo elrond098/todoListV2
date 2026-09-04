@@ -1,5 +1,5 @@
 import express from 'express';
-import { addTodoList, displayTodoList, deleteTodoList } from './serv.js';
+import { addTodoList, displayTodoList, deleteTodoList, changeCompletedStatus, updateTodoPosition } from './serv.js';
 const router = express.Router();
 
 router.post('/display', async (req, res) => {
@@ -27,11 +27,33 @@ router.post('/add', async (req, res) => {
 
 router.delete('/delete', async (req, res) => {
   console.log('router.js: BE Received The Request', req.body);
-  const { idTodoList } = req.body;
-  const dbres = await deleteTodoList(idTodoList);
+  const { idTodoList, id, completed } = req.body;
+  const dbres = await deleteTodoList(idTodoList, id, completed);
   res.status(200).json({
     success: true,
     mesasge: 'TodoList had beed deleted by server',
+    data: dbres
+  });
+});
+
+router.patch('/changecompletedstatus', async (req, res) => {
+  console.log('router.js: BE Received The Request', req.body);
+  const { completed, idTodoList, id } = req.body;
+  const dbres = await changeCompletedStatus(completed, idTodoList, id);
+  res.status(200).json({
+    success: true,
+    message: 'TodoList status had been changed',
+    data: dbres
+  });
+});
+
+router.put('/changeposition', async (req, res) => {
+  console.log('router.js: BE Received The Request', req.body);
+  const { idTodoList, position } = req.body;
+  const dbres = await updateTodoPosition(idTodoList, position);
+  res.status(200).json({
+    success: true,
+    message: 'TodoList position has been changed',
     data: dbres
   });
 });
