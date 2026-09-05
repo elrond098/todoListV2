@@ -1,0 +1,126 @@
+.wrapper-page1 {
+  margin: 0;
+  display: flex;
+  flex-direction: row-reverse;
+  height: 100vh;
+}
+
+.right-page1 {
+  /* background-color: gray; */
+  flex: 1;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;     /* tengah secara horizontal */
+  justify-content: center; /* tengah secara vertikal */
+
+}
+.left-page1 {
+  background-color: white;
+  flex: 1;
+  overflow-y: auto;
+  scrollbar-gutter: stable;
+    box-shadow: 24px 48px rgba(15, 23, 42, 0.12);
+}
+
+.container-list {
+  list-style: none; /* hapus titik/bullet */
+  padding: 35px 24px 11px 35px;
+  margin: 0;
+}
+.theListOfContainer {
+  font-size: 34px;
+  margin-bottom: 24px;
+      display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 8px;
+    align-items: center;
+    /* padding: 16px 14px; */
+    /* border: 1px solid var(--border); */
+    /* border-radius: 6px; */
+    /* /* margin-bottom: 12px; */ */
+    /* background: #fcfcff; */
+}
+
+.listNav:hover {
+    background: rgba(10, 27, 65, 0.089);
+}
+
+.listNav:active {
+    border-color: var(--primary);
+    background: rgba(9, 25, 59, 0.12);
+    color: var(--text);
+}
+
+.delete-container:hover {
+    background: rgba(10, 27, 65, 0.089);
+}
+
+.delete-container:active {
+    border-color: var(--primary);
+    background: rgba(9, 25, 59, 0.12);
+    color: var(--text);
+}
+
+/* .listNav, .delete-container { */
+/*   font-size: 1rem; */
+/* } */
+/**/
+.listNav {
+  font-size: 1rem;
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.delete-container {
+  font-size: 1rem;
+  flex-shrink: 0;
+}
+
+.listNav, .delete-container {
+    padding: 16px 14px;
+    background: #fcfcff;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+
+}
+
+.form-container {
+  display: flex;
+  gap: 12px;
+}
+
+.form-container input {
+  flex: 1;
+  padding: 14px 16px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  font-size: 1rem;
+}
+.form-container button {
+  flex:1;
+    padding: 14px 22px;
+    border: none;
+    border-radius: 6px;
+    background: var(--primary);
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.form-container button:hover {
+    background: #4c5261;;
+}
+
+.form-container button:active {
+    background: var(--primary);
+}
+
+@media (max-width: 520px) {
+  .form-container {
+    flex-direction: column;
+  }
+}

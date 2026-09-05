@@ -1,6 +1,6 @@
 import { addTodoList, dspTodoList, deleteTodoList, changeCompletedStatus, updateTodoPosition } from '../../controller.js';
 import '../style/style.css';
-
+import { startPage1 } from '../../main.js';
 // export function displayTodoList(params) {
 //   const todoList = document.getElementById('todo-list');
 //   todoList.innerHTML = '';
@@ -22,6 +22,7 @@ export async function todoListComp(todos, idTodo) {
   const filterButtons = document.querySelectorAll('.filter-button');
   const sortSelect = document.getElementById("sort");
   const select = document.getElementById('select');
+  const backButton = document.getElementById('back-page1');
 
   let activeFilter = 'all';
 
@@ -234,6 +235,8 @@ export async function todoListComp(todos, idTodo) {
       renderTodos();
     });
   });
+
+  backButton.addEventListener('click', () => document.getElementById('app').innerHtml = startPage1());
 
   renderTodos();
 }

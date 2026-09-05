@@ -14,6 +14,7 @@ export function displayctnr(params, onDelete) {
 
     const deleteButton = document.createElement('button');
     deleteButton.textContent = 'Delete';
+    deleteButton.className = 'delete-container'
     deleteButton.addEventListener('click', () => onDelete(ctnr.id));
 
     li.appendChild(button);
