@@ -1,14 +1,14 @@
 import pg from 'pg';
-
+import 'dotenv/config';
 const { Pool} = pg;
 
 const pool = new Pool({
-  user: 'learndb',
-  host: 'localhost',
-  database: 'learndb',
-  password: 'sahal1234',
-  prot: 5432
-})
+  user: process.env.DB_USER,
+  host: process.env.DB_HOST,
+  database: process.env.DB_NAME,
+  password: process.env.DB_PASSWORD,
+  port: process.env.DB_PORT
+});
 
 const query = (text, params = []) => pool.query(text, params);
 export const endDatabaseConnection = () => pool.end();
