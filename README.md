@@ -1,6 +1,10 @@
 
 # TodoListApp
 
+<p align="center">
+  <img src="./images/todolist.png" alt="TodoListApp Screenshot">
+</p>
+
 This is my first completed small project. Its a common todo list app that many people build. I hope this will make me be a greater programmer in the future.
 
 If you want to use this or want to build this, read what in the below
@@ -127,6 +131,27 @@ DB_PORT=5432
 ```
 
 > **Important:** Do not commit your `.env` file to GitHub. Add `.env` to your `.gitignore` file to keep your database credentials private.
+
+## How to Run
+
+### 1. Start the Server
+
+From the project root directory, run:
+
+```bash
+node server/src/api.js
+```
+
+### 2. Start the Client
+
+Open another terminal, then go to the `client` folder:
+
+```bash
+cd client
+npm run dev
+```
+
+The Vite development server will provide a local URL in the terminal. Open that URL in your browser to use the application.
 
 ##### Oke Done, may it helpful for you
 
