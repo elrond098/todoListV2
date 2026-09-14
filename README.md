@@ -1,3 +1,4 @@
+
 # TodoListApp
 
 This is my first completed small project. Its a common todo list app that many people build. I hope this will make me be a greater programmer in the future.
@@ -10,17 +11,27 @@ Before running this project, make sure you have the following installed:
 
 1. PostgreSQL
 2. Node.js
-3. Vite
-4. JavaScript ES Modules
+3. npm
 
-### Node.js Dependencies
+The required Node.js dependencies are already included in the `package.json` files.
 
-The backend uses the following dependencies:
+To install the dependencies, go to the `client` and `server` folders and run:
 
-* `pg` — PostgreSQL client for Node.js
-* `cors` — Enables Cross-Origin Resource Sharing
-* `express` — Backend web framework
-* `dotenv` — Loads environment variables for the database configuration
+### Client
+
+```bash
+cd client
+npm install
+```
+
+### Server
+
+```bash
+cd server
+npm install
+```
+
+`npm install` will automatically install all dependencies listed in each `package.json` file.
 
 ## PostgreSQL Setup
 
@@ -116,7 +127,6 @@ DB_PORT=5432
 ```
 
 > **Important:** Do not commit your `.env` file to GitHub. Add `.env` to your `.gitignore` file to keep your database credentials private.
-
 
 ##### Oke Done, may it helpful for you
 
