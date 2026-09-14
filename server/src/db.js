@@ -6,11 +6,11 @@ const pool = new Pool({
   user: 'learndb',
   host: 'localhost',
   database: 'learndb',
-  password: '',
+  password: 'sahal1234',
   prot: 5432
 })
 
 const query = (text, params = []) => pool.query(text, params);
-export const end = () => pool.end();
+export const endDatabaseConnection = () => pool.end();
 
 export default query;

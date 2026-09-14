@@ -1,11 +1,11 @@
-import qr, { end } from './db.js';
+import qr, { endDatabaseConnection } from './db.js';
 //
 // Containers Area ===================================================================================
 //
-export async function display() {
+export async function getAllContainers() {
   let res;
   try {
-    res = await qr('SELECT * FROM Containers ORDER BY id ASC');
+    res = await qr('SELECT * FROM containers ORDER BY id ASC');
     console.log('serv.js: Data had been taken', res.rows);
   } catch (err) {
     console.error('serv.js: Failed to take all container', err.stack);
@@ -15,12 +15,10 @@ export async function display() {
   return res ? res.rows : null;
 }
 
-// display()
-
-export async function addContainer(params) {
+export async function addContainer(containerTitle) {
   let res;
   try {
-    res = await qr('INSERT INTO Containers(countained_name) VALUES($1) RETURNING *', [params]);
+    res = await qr('INSERT INTO containers(title) VALUES($1) RETURNING *', [containerTitle]);
     console.log('serv.js: Data had been inserted', res.rows);
   } catch (err) {
     console.error('serv.js: Failed to insert container', err.stack);
@@ -30,12 +28,10 @@ export async function addContainer(params) {
   return res ? res.rows : null;
 }
 
-// addContainer('Test'); 
-
-export async function deleteContainer(params) {
+export async function deleteContainer(idContainer) {
   let res;
   try {
-    res = await qr('DELETE FROM Containers WHERE id = $1 RETURNING *', [params]);
+    res = await qr('DELETE FROM containers WHERE id = $1 RETURNING *', [idContainer]);
     console.log('serv.js: Data had been deleted', res.rows);
   } catch (err) {
     console.error('serv.js: Failed to delete container', err.stack);
@@ -45,10 +41,10 @@ export async function deleteContainer(params) {
 //
 // TodoList Area ==========================================================================================
 //
-export async function displayTodoList(params) {
+export async function getAllTodoList(container_id) {
   let res;
   try {
-    res = await qr('SELECT * FROM todolist WHERE countainer_id = $1 ORDER BY position ASC', [params]);
+    res = await qr('SELECT * FROM todolist WHERE container_id = $1 ORDER BY position ASC', [container_id]);
     console.log('serv.js: Data had been taken', res.rows);
   } catch (err) {
     console.error('serv.js: Failed to take all TodoList', err.stack);
@@ -58,10 +54,10 @@ export async function displayTodoList(params) {
   return res ? res.rows : null;
 }
 
-export async function addTodoList(params1, params2) {
+export async function addTodoList(container_id, task) {
   let res;
   try {
-    res = await qr('INSERT INTO todolist(countainer_id, title) VALUES($1, $2) RETURNING *', [params1, params2]);
+    res = await qr('INSERT INTO todolist(container_id, task) VALUES($1, $2) RETURNING *', [container_id, task]);
     console.log('serv.js: TodoList had Been Added', res.rows);
   } catch (err) {
     console.error('serv.js: Failed to Add TodoList', err.stack);
@@ -76,7 +72,7 @@ export async function deleteTodoList(idTodoList = null, idContainer, completed =
     let queryParams;
 
     if (completed !== null && completed !== undefined) {
-      query = 'DELETE FROM todolist WHERE countainer_id = $1 AND completed = $2 RETURNING *';
+      query = 'DELETE FROM todolist WHERE container_id = $1 AND completed = $2 RETURNING *';
       queryParams = [idContainer, completed];
     } else {
       query = 'DELETE FROM todolist WHERE id = $1 RETURNING *';
@@ -90,34 +86,19 @@ export async function deleteTodoList(idTodoList = null, idContainer, completed =
   }
 }
 
-// export async function changeCompletedStatus(params, params2) {
-//   let res;
-//   try {
-//     res = await qr('UPDATE todolist SET completed = $1 WHERE id = $2 RETURNING *', [params, params2]);
-//     console.log('serv.js: Completed Status Has Been Changed');
-//   } catch (err) {
-//     console.error('serv.js: Failed to Change Status Completed', err.stack);
-//   }
-//   return res ? res.rows : null;
-// }
-//
-
-export async function changeCompletedStatus(completed, id = null, idContainer) {
+export async function changeCompletedStatus(completed, idTodoList = null, idContainer) {
   let res;
   try {
     let query;
     let queryParams;
 
-    if (id !== null && id !== undefined) {
-      // 🎯 Mode 1: Mengubah spesifik (Hanya yang memiliki ID tersebut)
+    if (idTodoList !== null && idTodoList !== undefined) {
       query = 'UPDATE todolist SET completed = $1 WHERE id = $2 RETURNING *';
-      queryParams = [completed, id];
+      queryParams = [completed, idTodoList];
     } else {
-      // 🌍 Mode 2: Mengubah keseluruhan (Semua data di dalam tabel)
-      query = 'UPDATE todolist SET completed = $1 WHERE countainer_id = $2 RETURNING *';
+      query = 'UPDATE todolist SET completed = $1 WHERE container_id = $2 RETURNING *';
       queryParams = [completed, idContainer];
     }
-
     res = await qr(query, queryParams);
     console.log('serv.js: Completed Status Has Been Changed');
   } catch (err) {
@@ -126,11 +107,10 @@ export async function changeCompletedStatus(completed, id = null, idContainer) {
   return res ? res.rows : null;
 }
 
-
-export async function updateTodoPosition(id, position) {
+export async function updateTodoListPosition(idTodoList, positionTodoList) {
   try {
-    await qr('UPDATE todolist SET position = $1 WHERE id = $2', [position, id]);
-    console.log(`serv.js: Position updated for ID ${id}`);
+    await qr('UPDATE todolist SET position = $1 WHERE id = $2', [positionTodoList, idTodoList]);
+    console.log(`serv.js: Position updated for ID ${idTodoList}`);
   } catch (err) {
     console.error('serv.js: Failed to update position', err.stack);
   }

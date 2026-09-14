@@ -1,22 +1,28 @@
-import todoList from './page2/main.js';
-import container from './page1/main.js';
-import { formFrag } from './page1/components/form.js';
-import { formFragTodo } from './page2/components/form.js';
+import todoListScript from './todoListPage/main.js';
+import containerScript from './containerPage/main.js';
+import { formFragContainer } from './containerPage/components/form.js';
+import { formFragTodo } from './todoListPage/components/form.js';
+import { displayHomePage } from './homepage/display.js';
+import { homePageScript } from './homepage/main.js';
 
 
-export async function startPage1() {
-  document.getElementById('app').innerHTML = formFrag();
+export async function startContainerPage() {
+  document.getElementById('app').innerHTML = formFragContainer();
 
-  let todos = [];
-  container(todos);
+  let containerStorage = [];
+  containerScript(containerStorage);
 }
 
-export async function startPage2(container) {
+export async function startTodoListPage(container) {
   document.getElementById('app').innerHTML = formFragTodo(container);
 
-  let todos = [];
-  todoList(todos, container);
+  let todoListStorage = [];
+  todoListScript(todoListStorage, container);
 }
 
-startPage1();
+function startHomePage() {
+  document.getElementById('app').innerHTML = displayHomePage();
+  homePageScript();
+}
+startHomePage();
 

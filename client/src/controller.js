@@ -2,71 +2,71 @@ let httpPath = 'http://localhost:3000/';
 //
 // Container Area ===================================================================================
 //
-export async function addContainer(params, params2) {
+export async function reqAddContainer(containerTitle, containerStorage) {
   try {
-    const res = await fetch(httpPath + 'ctnr/add', {
+    const responses = await fetch(httpPath + 'container/add', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify(params)
+      body: JSON.stringify(containerTitle)
     });
 
-    if (!res.ok) {
-      throw new Error(`controller.js: HTTP error! Status: ${res.status}`);
+    if (!responses.ok) {
+      throw new Error(`controller.js: HTTP error! Status: ${responses.status}`);
     }
 
-    const result = await res.json();
-    console.log('controller.js: Responses from server:', result);
+    const convertedResponses = await responses.json();
+    console.log('controller.js: Responses from server:', convertedResponses);
   } catch (error) {
     console.error('controller.js: Failed send container:', error);
   }
 
-  await dspContainer(params2);
+  await reqAllContainerData(containerStorage);
 }
 
-export async function dspContainer(params) {
-  let result;
+export async function reqAllContainerData(containerStorage) {
+  let convertedResponses;
 
   try {
-    const res = await fetch(httpPath + 'ctnr/display', {
+    const responses = await fetch(httpPath + 'container/display', {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json'
       }
     });
 
-    if (!res.ok) {
-      throw new Error(`controller.js: HTTP error! Status: ${res.status}`);
+    if (!responses.ok) {
+      throw new Error(`controller.js: HTTP error! Status: ${responses.status}`);
     }
 
-    result = await res.json();
-    console.log('controller.js: Responses from server:', result);
+    convertedResponses = await responses.json();
+    console.log('controller.js: Responses from BackEnd:', convertedResponses);
   } catch (error) {
-    console.error('controller.js: Failed get containers:', error);
+    console.error('controller.js: Failed to request containers:', error);
     return;
   }
 
-  params.length = 0;
-  params.push(...result.data);
+  containerStorage.length = 0;
+  containerStorage.push(...convertedResponses.data);
 }
 
-export async function deleteContainer(params) {
+export async function reqDeleteContainer(containerStorage) {
   try {
-    const res = await fetch(httpPath + 'ctnr/delete', {
+    const responses = await fetch(httpPath + 'container/delete', {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify(params)
+      body: JSON.stringify(containerStorage)
     });
 
-    if (!res.ok) {
-      throw new Error(`controller.js: HTTP error! Status: ${res.status}`);
+    if (!responses.ok) {
+      throw new Error(`controller.js: HTTP error! Status: ${responses.status}`);
     }
 
-    const result = await res.json();
-    console.log('controller.js: Responses from server:', result);
+    const  convertedResponses= await responses.json();
+    console.log('controller.js: Responses from BackEnd:', convertedResponses);
   } catch (error) {
     console.error('controller.js: Failed delete container:', error);
   }
@@ -74,120 +74,119 @@ export async function deleteContainer(params) {
 //
 // TodoList Area ========================================================================================================
 //
-export async function addTodoList(params, params2) {
+export async function reqAddTodoList(todoList, todoListStorage) {
   try {
-    const res = await fetch(httpPath + 'todolist/add', {
+    const responses = await fetch(httpPath + 'todolist/add', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify(params)
+      body: JSON.stringify(todoList)
     });
 
-    if (!res.ok) {
-      throw new Error(`controller.js: HTTP error! Status: ${res.status}`);
+    if (!responses.ok) {
+      throw new Error(`controller.js: HTTP error! Status: ${responses.status}`);
     }
 
-    const result = await res.json();
-    console.log('controller.js: Responses from server:', result);
+    const convertedResponses = await responses.json();
+    console.log('controller.js: Responses from BackEnd:', convertedResponses);
   } catch (error) {
-    console.error('controller.js: Failed send todolist:', error);
+    console.error('controller.js: Failed send Req Add todolist:', error);
   }
 
-  await dspTodoList(params2, params);
+  await reqAllTodoListData(todoListStorage, todoList);
 }
 
-export async function dspTodoList(params, params2) {
-  let result;
+export async function reqAllTodoListData(todoListStorage, container) {
+  let convertedResponses;
 
   try {
-    const res = await fetch(httpPath + 'todolist/display', {
+    const responses = await fetch(httpPath + 'todolist/display', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify(params2)
+      body: JSON.stringify(container)
     });
 
-    if (!res.ok) {
-      throw new Error(`controller.js: HTTP error! Status: ${res.status}`);
+    if (!responses.ok) {
+      throw new Error(`controller.js: HTTP error! Status: ${responses.status}`);
     }
 
-    result = await res.json();
-    console.log('controller.js: Responses from server:', result);
+    convertedResponses = await responses.json();
+    console.log('controller.js: Responses from BackEnd:', convertedResponses);
   } catch (error) {
-    console.error('controller.js: Failed get todolist:', error);
+    console.error('controller.js: Failed to get all todolist data:', error);
     return;
   }
 
-  params.length = 0;
-  params.push(...result.data);
+  todoListStorage.length = 0;
+  todoListStorage.push(...convertedResponses.data);
 }
 
-export async function deleteTodoList(params, params2) {
+export async function reqDeleteTodoList(data, todoListStorage) {
   try {
-    const res = await fetch(httpPath + 'todolist/delete', {
+    const responses = await fetch(httpPath + 'todolist/delete', {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify(params)
+      body: JSON.stringify(data)
     });
 
-    if (!res.ok) {
-      throw new Error(`controller.js: HTTP error! Status: ${res.status}`);
+    if (!responses.ok) {
+      throw new Error(`controller.js: HTTP error! Status: ${responses.status}`);
     }
 
-    const result = await res.json();
-    console.log('controller.js: Responses from server:', result);
+    const convertedResponses = await responses.json();
+    console.log('controller.js: Responses from BackEnd:', convertedResponses);
   } catch (error) {
-    console.error('controller.js: Failed delete todolist:', error);
+    console.error('controller.js: Failed to req delete todolist:', error);
   }
-  await dspTodoList(params2, params);
+  await reqAllTodoListData(todoListStorage, data);
 }
 
-export async function changeCompletedStatus(params, params2) {
+export async function reqChangeCompletedStatus(data, todoListStorage) {
   try {
-    const res = await fetch(httpPath + 'todolist/changecompletedstatus', {
+    const responses = await fetch(httpPath + 'todolist/changecompletedstatus', {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify(params)
+      body: JSON.stringify(data)
     });
 
-    if (!res.ok) {
-      throw new Error(`controller.js: HTTP error! Status: ${res.status}`);
+    if (!responses.ok) {
+      throw new Error(`controller.js: HTTP error! Status: ${responses.status}`);
     }
 
-    const result = await res.json();
-    console.log('controller.js: Responses from server:', result);
+    const convertedResponses = await responses.json();
+    console.log('controller.js: Responses from BackEnd:', convertedResponses);
   } catch (error) {
-    console.error('controller.js: Failed change status completed todolist:', error);
+    console.error('controller.js: Failed req change status completed todolist:', error);
   }
-  await dspTodoList(params2, params);
+  await reqAllTodoListData(todoListStorage, data);
 }
 
-export async function updateTodoPosition(params, params2) {
+export async function reqUpdateTodoPosition(data, todoListStorage) {
   try {
-    const res = await fetch(httpPath + 'todolist/changeposition', {
+    const responses = await fetch(httpPath + 'todolist/changeposition', {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify(params)
+      body: JSON.stringify(data)
     });
 
-    if (!res.ok) {
-      throw new Error(`controller.js: HTTP error! Status: ${res.status}`);
+    if (!responses.ok) {
+      throw new Error(`controller.js: HTTP error! Status: ${responses.status}`);
     }
 
-    const result = await res.json();
-    console.log('controller.js: Responses from server:', result);
+    const convertedResponses = await responses.json();
+    console.log('controller.js: Responses from BackEnd:', convertedResponses);
   } catch (error) {
-    console.error('controller.js: Failed change status completed todolist:', error);
+    console.error('controller.js: Failed req change status completed todolist:', error);
   }
-  await dspTodoList(params2, params);
+  await reqAllTodoListData(todoListStorage, data);
 }
-
 

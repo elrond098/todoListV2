@@ -1,0 +1,30 @@
+.home-wrapper {
+  margin: 0;
+  min-height: 100vh;
+  font-family: Inter, system-ui, sans-serif;
+  background: rgb(255, 249, 198);
+  color: var(--text);
+  display: grid;
+  place-items: center;
+  padding: 24px;
+}
+
+.main-menu {
+  width: min(640px, auto);
+  height: auto;
+  background: var(--surface);
+  border-radius: 6px;
+  box-shadow: 24px 48px rgba(15, 23, 42, 0.12);
+  padding: 32px;
+  text-decoration: none;
+  color: black;
+  cursor: pointer;
+}
+
+.main-menu:hover {
+  background: #e2e2e2;
+}
+
+.main-menu:active {
+  background: #c2c2c2;
+}

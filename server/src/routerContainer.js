@@ -1,37 +1,37 @@
 import express from 'express';
-import { addContainer, display, deleteContainer } from './serv.js';
+import { addContainer, getAllContainers, deleteContainer } from './serv.js';
 const router = express.Router();
 
 router.get('/display', async (req, res) => {
-  console.log('router.js: BE Received The Request');
-  const dbres = await display();
-  console.log('router.js: Data From DB:', dbres);
+  console.log('router.js: BackEnd Received The Request');
+  const databaseRes = await getAllContainers();
+  console.log('router.js: Data From Database:', databaseRes);
   res.status(200).json({
     success: true,
-    message: 'Container had been received by server',
-    data: dbres
+    message: 'routerContainer.js: Container had been taken by BackEnd',
+    data: databaseRes
   });
 });
 
 router.post('/add', async (req, res) => {
-  console.log('router.js: BE Received The Container', req.body);
-  const { container } = req.body;
-  const dbres = await addContainer(container);
+  console.log('router.js: BackEnd Received The Container', req.body);
+  const { title } = req.body;
+  const databaseRes = await addContainer(title);
   res.status(200).json({
     success: true,
-    message: 'Container had been received by server',
-    data: dbres
+    message: 'Container had been added by BackEnd',
+    data: databaseRes
   });
 });
 
 router.delete('/delete', async (req, res) => {
   console.log('router.js: BE Received The Request', req.body);
   const { id, completed } = req.body;
-  const dbres = await deleteContainer(id, completed);
+  const databaseRes = await deleteContainer(id, completed);
   res.status(200).json({
     success: true,
-    mesasge: 'Container had beed deleted by server',
-    data: dbres
+    mesasge: 'Container had beed deleted by BackEnd',
+    data: databaseRes
   });
 });
 
