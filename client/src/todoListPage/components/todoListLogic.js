@@ -39,7 +39,7 @@ export async function todoListLogic(todoListStorage, container) {
 
   function updateTodoListCount() {
     const countTodoList = todoListStorage.filter(todoList => !todoList.completed).length;
-    todoCountElement.textContent = `${countTodoList} tugas tersisa`;
+    todoCountElement.textContent = `${countTodoList} tasks left`;
   }
 
   function renderTodoList() {
